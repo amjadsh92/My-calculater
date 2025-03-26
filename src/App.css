@@ -71,3 +71,10 @@
   z-index: 2;
 
 }
+
+.result{
+  height:15%;
+  text-align:center;
+  align-content:center;
+  color:white;
+}
