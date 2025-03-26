@@ -12,33 +12,57 @@ function App() {
   return(
       <div className="app">
        <div className="calculater">
-        <div className="input">
-          <div id="clear" className="clear">AC</div>
-          <div id="division" className="operation">/</div>
-          <div id="multiplication"  className="operation">×</div>
-          <div id="seven" className="number">7</div>
-          <div id="eight"  className="number">8</div>
-          <div id="nine"  className="number">9</div>
-          <div id="minus"  className="operation">-</div>
-          <div id="four" className="number">4</div>
-          <div id="five"  className="number">5</div>
-          <div id="six"  className="number">6</div>
-          <div id="minus" className="operation">+</div>
-          <div id="one" className="number">1</div>
-          <div id="two"  className="number">2</div>
-          <div id="three"  className="number">3</div>
-          <div id="equal"  className="equal">=</div>
-          <div id="zero"  className="zero">0</div>
-          <div id="dot"  className="dot">.</div>
-
-        </div>
-         
+       <Input />        
 
        </div>
 
       </div>
 
   )
+  
+
+}
+
+
+function Input(){
+
+return (
+  <div className="input">
+          
+          <InputCell name="clear" type="clear" content="AC" />
+          <InputCell name="division" type="operation" content="/" />
+          <InputCell name="multiplication" type="operation" content="×" />
+          <InputCell name="seven" type="number" content="7" />
+          <InputCell name="eight" type="number" content="8" />
+          <InputCell name="nine" type="number" content="9" />
+          <InputCell name="minus" type="operation" content="-" />
+          <InputCell name="four" type="number" content="4" />
+          <InputCell name="five" type="number" content="5" />
+          <InputCell name="six" type="number" content="6" />
+          <InputCell name="plus" type="operation" content="+" />
+          <InputCell name="one" type="number" content="1" />
+          <InputCell name="two" type="number" content="2" />
+          <InputCell name="three" type="number" content="3" />
+          <InputCell name="equal" type="equal" content="=" />
+          <InputCell name="zero" type="zero" content="0" />
+          <InputCell name="dot" type="dot" content="." />
+          
+
+        </div>
+)
+
+
+}
+
+
+function InputCell({name, type, content}){
+
+  return(
+
+  <div id={name} className={type}>{content}</div>
+
+  )
+
   
 
 }
