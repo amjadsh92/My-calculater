@@ -59,8 +59,28 @@ return (
 function InputCell({name, type, content, setEquation, equation}){
 
   const handleClick = () => {
+      if (content === "AC"){
+        setEquation("")
+      }
+      else if (content === "/" ){
       equation += content
+      const regex1 = /\/+/g;
+      const regex2 = /[×+-]\//g;
+      const regex3 = /^\d+\.\//;
+      const regex4 = /[×+-\/]\d+\.\//g;
+      equation = equation.replace(regex1,"/");
+      equation = equation.replace(regex2,"/");
+      equation = equation.replace(regex3,"0/");
+      equation = equation.replace(regex4,"/");
+
       setEquation(equation)
+      }
+
+      else {
+        equation += content;
+        setEquation(equation)
+
+      }
   }
 
   return(
