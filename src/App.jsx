@@ -86,13 +86,37 @@ function InputCell({name, type, content, setEquation, equation}){
       else if(type === "dot") {
         equation += content;
         const dotRegex1 = new RegExp(`\\${content}+`, "g")
-        //const dotRegex2 = new RegExp(`^\\${content} | (?<=[\\+×/-])\\${content}`, "g")
         const dotRegex2 = new RegExp(`^\\${content}|(?<=[+×/-])\\.` ,"g")
         const dotRegex3 = new RegExp(`(?<=\\d+\\.\\d+)\\.`);
         equation = equation.replace(dotRegex1,`${content}`);
         equation = equation.replace(dotRegex2,`0${content}`);
         equation = equation.replace(dotRegex3,"");
         setEquation(equation)
+
+      }
+      else if(type === "equal"){
+        const equalRegex1 = /^[/×].+/;
+        const equalRegex2 = /(?<=.+)[\.\+\/×]$/;
+        if (equation === "×" || equation === "/"){
+          equation += content + "NAN"
+          setEquation(equation)
+        }
+        else if(equalRegex1.test(equation)){
+          setEquation(equation)
+
+        }
+        else if (equalRegex2.test(equation)){
+
+          equation = equation.replace(equalRegex2,"");
+          equation += content + equation
+
+          setEquation(equation)
+
+            
+        
+
+
+        }
 
       }
 
