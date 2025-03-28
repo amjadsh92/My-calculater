@@ -64,13 +64,14 @@ function InputCell({name, type, content, setEquation, equation}){
       }
       else if (content === "/"  || content === "×" ){
       equation += content
-      const regex1 = /\/+/g;
+      // const regex1 = /\/+/g;
       // const regex2 = new RegExp(`[×+-\\/]${content}`, "g");
       // const regex3 = new RegExp(`^\\d+\\.\\${content}`);
       // const regex4 = new RegExp(`[×+-\\${content}]\\d+\\.\\/`, "g");
       // const regex2 = /[×+-]\//g;
       // const regex3 = /^\d+\.\//;
       // const regex4 = /[×+-\/]\d+\.\//g;
+      const regex1 = new RegExp(`${content}+`, "g")
       const regex2 = new RegExp(`[×+\\-/]${content}`, "g");
       const regex3 = new RegExp(`^\\d+\\.${content}`);
       const regex4 = new RegExp(`[×+\\-/]\\d+\\.${content}`, "g");
