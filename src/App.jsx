@@ -62,16 +62,22 @@ function InputCell({name, type, content, setEquation, equation}){
       if (content === "AC"){
         setEquation("")
       }
-      else if (content === "/" ){
+      else if (content === "/"  || content === "×" ){
       equation += content
       const regex1 = /\/+/g;
-      const regex2 = /[×+-]\//g;
-      const regex3 = /^\d+\.\//;
-      const regex4 = /[×+-\/]\d+\.\//g;
-      equation = equation.replace(regex1,"/");
-      equation = equation.replace(regex2,"/");
-      equation = equation.replace(regex3,"0/");
-      equation = equation.replace(regex4,"/");
+      // const regex2 = new RegExp(`[×+-\\/]${content}`, "g");
+      // const regex3 = new RegExp(`^\\d+\\.\\${content}`);
+      // const regex4 = new RegExp(`[×+-\\${content}]\\d+\\.\\/`, "g");
+      // const regex2 = /[×+-]\//g;
+      // const regex3 = /^\d+\.\//;
+      // const regex4 = /[×+-\/]\d+\.\//g;
+      const regex2 = new RegExp(`[×+\\-/]${content}`, "g");
+      const regex3 = new RegExp(`^\\d+\\.${content}`);
+      const regex4 = new RegExp(`[×+\\-/]\\d+\\.${content}`, "g");
+      equation = equation.replace(regex1,`${content}`);
+      equation = equation.replace(regex2,`${content}`);
+      equation = equation.replace(regex3,`0${content}`);
+      equation = equation.replace(regex4,`${content}`);
 
       setEquation(equation)
       }
