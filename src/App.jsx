@@ -7,7 +7,7 @@ import "./App.css";
 
 function App() {
 
-  const [equation, setEquation] = useState(0)
+  const [equation, setEquation] = useState("")
 
   return(
       <div className="app">
@@ -62,7 +62,7 @@ function InputCell({name, type, content, setEquation, equation}){
       if (content === "AC"){
         setEquation("")
       }
-      else if (content === "/"  || content === "×" || content === "+" || content === "-"  ){
+      else if (type === "operation"){
       equation += content
       // const regex1 = /\/+/g;
       // const regex2 = new RegExp(`[×+-\\/]${content}`, "g");
@@ -83,7 +83,20 @@ function InputCell({name, type, content, setEquation, equation}){
       setEquation(equation)
       }
 
-      else {
+      else if(type === "dot") {
+        equation += content;
+        const dotRegex1 = new RegExp(`\\${content}+`, "g")
+        //const dotRegex2 = new RegExp(`^\\${content} | (?<=[\\+×/-])\\${content}`, "g")
+        const dotRegex2 = new RegExp(`^\\${content}|(?<=[+×/-])\\.` ,"g")
+        const dotRegex3 = new RegExp(`(?<=\\d+\\.\\d+)\\.`);
+        equation = equation.replace(dotRegex1,`${content}`);
+        equation = equation.replace(dotRegex2,`0${content}`);
+        equation = equation.replace(dotRegex3,"");
+        setEquation(equation)
+
+      }
+
+      else{
         equation += content;
         setEquation(equation)
 
