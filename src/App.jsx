@@ -108,15 +108,18 @@ function InputCell({name, type, content, setEquation, equation}){
         else if (equalRegex2.test(equation)){
 
           equation = equation.replace(equalRegex2,"");
-          equation += content + equation
+          equation += content + eval(equation)
 
           setEquation(equation)
 
-            
-        
+      }
+
+      else{
+        equation += content + eval(equation)
+        setEquation(equation)
 
 
-        }
+      }
 
       }
 
