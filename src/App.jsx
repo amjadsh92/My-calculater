@@ -101,9 +101,9 @@ function InputCell({name, type, content, setEquation, equation}){
         //equation = equation.replace(equalRegex,"");
         equationToEvaluate = equation.replace("⋅","*")
 
-        if (equation === "⋅" || equation === "/"){
-          equation += content + "NAN"
-          setEquation(equation)
+        if (equation === "⋅" || equation === "/" || equation === "+"  || equation === "-"){
+          
+          setEquation(content + "NAN")
         }
         else if(equalRegex1.test(equation)){
           if(equalRegex3.test(equation)){
