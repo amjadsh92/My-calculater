@@ -60,6 +60,7 @@ function InputCell({name, type, content, setEquation, equation}){
 
   let equationToEvaluate;
   let expression= equation.expression
+  let result = equation.result
 
   const handleClick = () => {
       if (content === "AC"){
@@ -100,12 +101,18 @@ function InputCell({name, type, content, setEquation, equation}){
         const equalRegex1 = /^[/⋅].+/;
         const equalRegex2 = /(?<=.+)[\.\+\/⋅\*\-]$/;
         const equalRegex3 = /^(\+)/;
+        const equalRegex4 = /(.+)?=(.+)/;
         //equation = equation.replace(equalRegex,"");
         equationToEvaluate = expression.replace("⋅","*")
 
         if (expression === "⋅" || expression === "/" || expression === "+"  || expression === "-"){
           expression = content + "NAN" 
           setEquation({...equation, expression})
+        }
+
+        else if (equalRegex4.test(expression)){
+          setEquation({...equation, expression});
+
         }
         else if(equalRegex1.test(expression)){
           if(equalRegex3.test(expression)){
@@ -121,8 +128,9 @@ function InputCell({name, type, content, setEquation, equation}){
 
           expression = expression.replace(equalRegex2,"");
           equationToEvaluate = equationToEvaluate.replace(equalRegex2,"");
-          expression += content + eval(equationToEvaluate)
-          setEquation({...equation, expression})
+          result = eval(equationToEvaluate)
+          expression += content + result
+          setEquation({expression, result})
 
       }
 
@@ -131,8 +139,9 @@ function InputCell({name, type, content, setEquation, equation}){
         if(equalRegex3.test(expression)){
           expression = expression.replace(equalRegex3, "")
         }
+        result = eval(equationToEvaluate)
         expression += content + eval(equationToEvaluate)
-        setEquation({...equation, expression})
+        setEquation({expression, result})
 
 
       }
@@ -140,7 +149,7 @@ function InputCell({name, type, content, setEquation, equation}){
       }
 
       else{
-        debugger;
+        
         expression += content;
         setEquation({...equation, expression})
 
