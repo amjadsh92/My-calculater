@@ -7,7 +7,7 @@ import "./App.css";
 
 function App() {
 
-  const [equation, setEquation] = useState("")
+  const [equation, setEquation] = useState({expression:"",result:""})
 
   return(
       <div className="app">
@@ -59,37 +59,39 @@ return (
 function InputCell({name, type, content, setEquation, equation}){
 
   let equationToEvaluate;
+  let expression= equation.expression
 
   const handleClick = () => {
       if (content === "AC"){
-        setEquation("")
+        expression=""
+        setEquation({...equation, expression})
       }
       else if (type === "operation"){
-      equation += content
+      expression += content
       
       const regex1 = new RegExp(`\\${content}+`, "g")
       const regex2 = new RegExp(`(?![/⋅]-)[⋅\\+\\-/]\\${content}`, "g");
       const regex3 = new RegExp(`^\\d+\\.\\${content}`);
       const regex4 = new RegExp(`[⋅\\+\\-/]\\d+\\.\\${content}`, "g");
       //const regex5 = /×/;
-      equation = equation.replace(regex1,`${content}`);
-      equation = equation.replace(regex2,`${content}`);
-      equation = equation.replace(regex3,`0${content}`);
-      equation = equation.replace(regex4,`${content}`);
+      expression = expression.replace(regex1,`${content}`);
+      expression = expression.replace(regex2,`${content}`);
+      expression = expression.replace(regex3,`0${content}`);
+      expression = expression.replace(regex4,`${content}`);
       //equation = equation.replace(regex5,"⋅");
 
-      setEquation(equation)
+      setEquation({...equation, expression})
       }
 
       else if(type === "dot") {
-        equation += content;
+        expression += content;
         const dotRegex1 = new RegExp(`\\${content}+`, "g")
         const dotRegex2 = new RegExp(`^\\${content}|(?<=[+⋅/-])\\.` ,"g")
         const dotRegex3 = new RegExp(`(?<=\\d+\\.\\d+)\\.`);
-        equation = equation.replace(dotRegex1,`${content}`);
-        equation = equation.replace(dotRegex2,`0${content}`);
-        equation = equation.replace(dotRegex3,"");
-        setEquation(equation)
+        expression = expression.replace(dotRegex1,`${content}`);
+        expression = expression.replace(dotRegex2,`0${content}`);
+        expression = expression.replace(dotRegex3,"");
+        setEquation({...equation, expression})
 
       }
       else if(type === "equal"){
@@ -99,37 +101,38 @@ function InputCell({name, type, content, setEquation, equation}){
         const equalRegex2 = /(?<=.+)[\.\+\/⋅\*\-]$/;
         const equalRegex3 = /^(\+)/;
         //equation = equation.replace(equalRegex,"");
-        equationToEvaluate = equation.replace("⋅","*")
+        equationToEvaluate = expression.replace("⋅","*")
 
-        if (equation === "⋅" || equation === "/" || equation === "+"  || equation === "-"){
-          
-          setEquation(content + "NAN")
+        if (expression === "⋅" || expression === "/" || expression === "+"  || expression === "-"){
+          expression = content + "NAN" 
+          setEquation({...equation, expression})
         }
-        else if(equalRegex1.test(equation)){
-          if(equalRegex3.test(equation)){
-            equation = equation.replace(equalRegex3, "")
+        else if(equalRegex1.test(expression)){
+          if(equalRegex3.test(expression)){
+            expression = expression.replace(equalRegex3, "")
           }
-          setEquation(equation)
+          setEquation({...equation, expression})
 
         }
-        else if (equalRegex2.test(equation)){
-          if(equalRegex3.test(equation)){
-            equation = equation.replace(equalRegex3, "")
+        else if (equalRegex2.test(expression)){
+          if(equalRegex3.test(expression)){
+            expression = expression.replace(equalRegex3, "")
           }
 
-          equation = equation.replace(equalRegex2,"");
+          expression = expression.replace(equalRegex2,"");
           equationToEvaluate = equationToEvaluate.replace(equalRegex2,"");
-          equation += content + eval(equationToEvaluate)
-          setEquation(equation)
+          expression += content + eval(equationToEvaluate)
+          setEquation({...equation, expression})
 
       }
 
       else{
-        if(equalRegex3.test(equation)){
-          equation = equation.replace(equalRegex3, "")
+        
+        if(equalRegex3.test(expression)){
+          expression = expression.replace(equalRegex3, "")
         }
-        equation += content + eval(equationToEvaluate)
-        setEquation(equation)
+        expression += content + eval(equationToEvaluate)
+        setEquation({...equation, expression})
 
 
       }
@@ -137,8 +140,9 @@ function InputCell({name, type, content, setEquation, equation}){
       }
 
       else{
-        equation += content;
-        setEquation(equation)
+        debugger;
+        expression += content;
+        setEquation({...equation, expression})
 
       }
   }
@@ -156,7 +160,7 @@ function InputCell({name, type, content, setEquation, equation}){
 function Equation({equation}){
 
   return(
-    <div id="result" className="result">{equation}</div>
+    <div id="result" className="result">{equation.expression}</div>
   )
 }
 
