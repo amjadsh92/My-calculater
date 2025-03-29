@@ -158,9 +158,16 @@ function InputCell({name, type, content, setEquation, equation}){
       }
 
       else{
+        if (equalRegex.test(expression)){
+          expression = content;
+          result = ""
+          setEquation({ expression, result});
+        }
+          else{
         
         expression += content;
         setEquation({...equation, expression})
+          }
 
       }
   }
