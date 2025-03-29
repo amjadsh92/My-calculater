@@ -94,6 +94,12 @@ function InputCell({name, type, content, setEquation, equation}){
       }
 
       else if(type === "dot") {
+        if (equalRegex.test(expression)){
+          expression = 0 + content;
+          result = ""
+          setEquation({ expression, result});
+        }
+        else{
         expression += content;
         const dotRegex1 = new RegExp(`\\${content}+`, "g")
         const dotRegex2 = new RegExp(`^\\${content}|(?<=[+⋅/-])\\.` ,"g")
@@ -102,6 +108,7 @@ function InputCell({name, type, content, setEquation, equation}){
         expression = expression.replace(dotRegex2,`0${content}`);
         expression = expression.replace(dotRegex3,"");
         setEquation({...equation, expression})
+        }
 
       }
       else if(type === "equal"){
