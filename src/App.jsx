@@ -58,27 +58,25 @@ return (
 
 function InputCell({name, type, content, setEquation, equation}){
 
+  let equationToEvaluate;
+
   const handleClick = () => {
       if (content === "AC"){
         setEquation("")
       }
       else if (type === "operation"){
       equation += content
-      // const regex1 = /\/+/g;
-      // const regex2 = new RegExp(`[×+-\\/]${content}`, "g");
-      // const regex3 = new RegExp(`^\\d+\\.\\${content}`);
-      // const regex4 = new RegExp(`[×+-\\${content}]\\d+\\.\\/`, "g");
-      // const regex2 = /[×+-]\//g;
-      // const regex3 = /^\d+\.\//;
-      // const regex4 = /[×+-\/]\d+\.\//g;
+      
       const regex1 = new RegExp(`\\${content}+`, "g")
       const regex2 = new RegExp(`(?![/×]-)[×\\+\\-/]\\${content}`, "g");
       const regex3 = new RegExp(`^\\d+\\.\\${content}`);
       const regex4 = new RegExp(`[×\\+\\-/]\\d+\\.\\${content}`, "g");
+      const regex5 = /×/;
       equation = equation.replace(regex1,`${content}`);
       equation = equation.replace(regex2,`${content}`);
       equation = equation.replace(regex3,`0${content}`);
       equation = equation.replace(regex4,`${content}`);
+      equation = equation.replace(regex5,"⋅");
 
       setEquation(equation)
       }
@@ -95,8 +93,12 @@ function InputCell({name, type, content, setEquation, equation}){
 
       }
       else if(type === "equal"){
+        const equalRegex = /⋅/g;
         const equalRegex1 = /^[/×].+/;
         const equalRegex2 = /(?<=.+)[\.\+\/×]$/;
+        equation = equation.replace(equalRegex,"");
+        equationToEvaluate = equation.replace(equalRegex,"*")
+
         if (equation === "×" || equation === "/"){
           equation += content + "NAN"
           setEquation(equation)
@@ -108,14 +110,14 @@ function InputCell({name, type, content, setEquation, equation}){
         else if (equalRegex2.test(equation)){
 
           equation = equation.replace(equalRegex2,"");
-          equation += content + eval(equation)
+          equation += content + eval(equationToEvaluate)
 
           setEquation(equation)
 
       }
 
       else{
-        equation += content + eval(equation)
+        equation += content + eval(equationToEvaluate)
         setEquation(equation)
 
 
