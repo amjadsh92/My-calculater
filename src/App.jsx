@@ -61,6 +61,7 @@ function InputCell({name, type, content, setEquation, equation}){
   let equationToEvaluate;
   let expression= equation.expression
   let result = equation.result
+  const equalRegex = /(.+)?=(.+)/;
 
   const handleClick = () => {
       if (content === "AC"){
@@ -68,6 +69,13 @@ function InputCell({name, type, content, setEquation, equation}){
         setEquation({...equation, expression})
       }
       else if (type === "operation"){
+         if (equalRegex.test(expression)){
+          expression = result + content;
+          result = ""
+          setEquation({ expression, result});
+
+        }
+        else{
       expression += content
       
       const regex1 = new RegExp(`\\${content}+`, "g")
@@ -82,6 +90,7 @@ function InputCell({name, type, content, setEquation, equation}){
       //equation = equation.replace(regex5,"⋅");
 
       setEquation({...equation, expression})
+        }
       }
 
       else if(type === "dot") {
@@ -101,7 +110,7 @@ function InputCell({name, type, content, setEquation, equation}){
         const equalRegex1 = /^[/⋅].+/;
         const equalRegex2 = /(?<=.+)[\.\+\/⋅\*\-]$/;
         const equalRegex3 = /^(\+)/;
-        const equalRegex4 = /(.+)?=(.+)/;
+        
         //equation = equation.replace(equalRegex,"");
         equationToEvaluate = expression.replace("⋅","*")
 
@@ -110,7 +119,7 @@ function InputCell({name, type, content, setEquation, equation}){
           setEquation({...equation, expression})
         }
 
-        else if (equalRegex4.test(expression)){
+        else if (equalRegex.test(expression)){
           setEquation({...equation, expression});
 
         }
