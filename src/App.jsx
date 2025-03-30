@@ -112,7 +112,7 @@ function InputCell({name, type, content, setEquation, equation}){
 
       }
       else if(type === "equal"){
-        debugger;
+      
         //const equalRegex = /⋅/g;
         const equalRegex1 = /^[/⋅].+/;
         const equalRegex2 = /(?<=.+)[\.\+\/⋅\*\-]$/;
@@ -165,19 +165,27 @@ function InputCell({name, type, content, setEquation, equation}){
       }
 
       else{
+        
         if (equalRegex.test(expression)){
           expression = content;
           result = ""
           setEquation({ expression, result});
         }
           else{
+            
+            const zeroRegex = /(?<!\d)0(?=\d)/g;
+            expression += content;
+            expression = expression.replace(zeroRegex, "")
+            setEquation({...equation, expression})
+            }
+
+
         
-        expression += content;
-        setEquation({...equation, expression})
+        
           }
 
       }
-  }
+  
 
   return(
 
