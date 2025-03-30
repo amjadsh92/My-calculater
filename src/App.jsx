@@ -206,7 +206,7 @@ function InputCell({name, type, content, setEquation, equation}){
 function Equation({equation}){
 
   return(
-    <div id="result" className="result">{equation.expression}</div>
+    <div id="result" className="result ds-digital">{equation.expression}</div>
   )
 }
 

@@ -1,3 +1,7 @@
+@import url('https://fonts.cdnfonts.com/css/ds-digital');
+
+
+
 *{
   margin:0;
   padding:0;
@@ -19,6 +23,10 @@
   align-content:end;
   padding:5px;
   
+}
+
+.ds-digital {
+  font-family: 'DS-Digital', sans-serif;
 }
 
 .input{
@@ -72,8 +80,10 @@
 }
 
 .result{
-  min-height: 25px;
-  text-align: end;
-  color: white;
-  overflow-wrap: break-word;
+  min-height: 35px;
+    text-align: end;
+    color: white;
+    overflow-wrap: break-word;
+    font-size: 25px;
+    color: greenyellow;
 }
