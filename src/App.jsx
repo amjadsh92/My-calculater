@@ -36,7 +36,7 @@ return (
           <InputCell name="seven" type="number" content="7" setEquation = {setEquation} equation ={equation} />
           <InputCell name="eight" type="number" content="8" setEquation = {setEquation} equation ={equation} />
           <InputCell name="nine" type="number" content="9" setEquation = {setEquation} equation ={equation} />
-          <InputCell name="minus" type="operation" content="−" setEquation = {setEquation} equation ={equation} />
+          <InputCell name="minus" type="operation" content="-" setEquation = {setEquation} equation ={equation} />
           <InputCell name="four" type="number" content="4" setEquation = {setEquation} equation ={equation} />
           <InputCell name="five" type="number" content="5" setEquation = {setEquation} equation ={equation} />
           <InputCell name="six" type="number" content="6" setEquation = {setEquation} equation ={equation} />
@@ -62,7 +62,7 @@ function InputCell({name, type, content, setEquation, equation}){
   let expression= equation.expression
   let result = equation.result
   const equalRegex = /(.+)?=(.+)/;
-  const minusRegex = /−/g;
+  const minusRegex = /-/g;
   const multiplicationRegex = /⋅/g;
 
   const handleClick = () => {
@@ -81,9 +81,9 @@ function InputCell({name, type, content, setEquation, equation}){
       expression += content
       
       const regex1 = new RegExp(`\\${content}+`, "g")
-      const regex2 = new RegExp(`(?![/⋅]−)[⋅\\+\\−/]\\${content}`, "g");
+      const regex2 = new RegExp(`(?![/⋅]-)[⋅\\+\\-/]\\${content}`, "g");
       const regex3 = new RegExp(`^\\d+\\.\\${content}`);
-      const regex4 = new RegExp(`[⋅\\+\\−/]\\d+\\.\\${content}`, "g");
+      const regex4 = new RegExp(`[⋅\\+\\-/]\\d+\\.\\${content}`, "g");
       //const regex5 = /×/;
       expression = expression.replace(regex1,`${content}`);
       expression = expression.replace(regex2,`${content}`);
@@ -104,7 +104,7 @@ function InputCell({name, type, content, setEquation, equation}){
         else{
         expression += content;
         const dotRegex1 = new RegExp(`\\${content}+`, "g")
-        const dotRegex2 = new RegExp(`^\\${content}|(?<=[+⋅/−])\\.` ,"g")
+        const dotRegex2 = new RegExp(`^\\${content}|(?<=[+⋅/-])\\.` ,"g")
         const dotRegex3 = new RegExp(`(?<=\\d+\\.\\d+)\\.`);
         expression = expression.replace(dotRegex1,`${content}`);
         expression = expression.replace(dotRegex2,`0${content}`);
@@ -117,7 +117,7 @@ function InputCell({name, type, content, setEquation, equation}){
       
         //const equalRegex = /⋅/g;
         const equalRegex1 = /^[/⋅].+/;
-        const equalRegex2 = /(?<=.+)[\.\+\/⋅\*\−]$/;
+        const equalRegex2 = /(?<=.+)[\.\+\/⋅\*\-]$/;
         const equalRegex3 = /^(\+)/;
         
         //equation = equation.replace(equalRegex,"");
@@ -125,7 +125,7 @@ function InputCell({name, type, content, setEquation, equation}){
         equationToEvaluate = expression.replace(multiplicationRegex,"*")
         equationToEvaluate = equationToEvaluate.replace(minusRegex,"-")
 
-        if (expression === "⋅" || expression === "/" || expression === "+"  || expression === "−"){
+        if (expression === "⋅" || expression === "/" || expression === "+"  || expression === "-"){
           expression = content + "NAN" 
           setEquation({...equation, expression})
         }
@@ -149,7 +149,7 @@ function InputCell({name, type, content, setEquation, equation}){
           expression = expression.replace(equalRegex2,"");
           equationToEvaluate = equationToEvaluate.replace(equalRegex2,"");
           result = eval(equationToEvaluate).toString()
-          result = result.replace("-","−")
+          result = result.replace("-","-")
           expression += content + result
           setEquation({expression, result})
 
@@ -161,7 +161,7 @@ function InputCell({name, type, content, setEquation, equation}){
           expression = expression.replace(equalRegex3, "")
         }
         result = eval(equationToEvaluate).toString()
-        result = result.replace("-","−")
+        result = result.replace("-","-")
         expression += content + result
         setEquation({expression, result})
 

@@ -81,9 +81,9 @@
 
 .result{
   min-height: 35px;
-    text-align: end;
-    color: white;
-    overflow-wrap: break-word;
-    font-size: 25px;
-    color: greenyellow;
+  text-align: end;
+  color: white;
+  overflow-wrap: break-word;
+  font-size: 20px;
+  color: greenyellow;
 }
