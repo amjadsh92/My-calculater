@@ -81,7 +81,8 @@ function InputCell({name, type, content, setEquation, equation}){
       expression += content
       
       const regex1 = new RegExp(`\\${content}+`, "g")
-      const regex2 = new RegExp(`(?![/⋅]-)[⋅\\+\\-/]\\${content}`, "g");
+      const regex2 = new RegExp(`(?![/⋅]-|-[⋅\\+\\-/])[⋅\\+\\-/]\\${content}`, "g");
+      const regex5 = new RegExp (`[/⋅]-(?!-)\\${content}`, "g")
       const regex3 = new RegExp(`^\\d+\\.\\${content}`);
       const regex4 = new RegExp(`[⋅\\+\\-/]\\d+\\.\\${content}`, "g");
       //const regex5 = /×/;
@@ -89,6 +90,7 @@ function InputCell({name, type, content, setEquation, equation}){
       expression = expression.replace(regex2,`${content}`);
       expression = expression.replace(regex3,`0${content}`);
       expression = expression.replace(regex4,`${content}`);
+      expression = expression.replace(regex5,`${content}`);
       //equation = equation.replace(regex5,"⋅");
 
       setEquation({...equation, expression})
