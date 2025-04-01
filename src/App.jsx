@@ -85,7 +85,7 @@ function InputCell({name, type, content, setEquation, equation}){
       
       const regex1 = new RegExp(`\\${content}+`, "g")
       const regex6 = new RegExp(`(?<![⋅\\+\\-/])-\\${content}`, "g")
-      const regex2 = new RegExp(`(?![/⋅]-|-[⋅\\+\\-/])[⋅\\+\\-/]\\${content}`, "g");
+      const regex2 = new RegExp(`(?![/⋅]-|-[⋅\\+\\-/])[⋅\\+\\-/\\.]\\${content}`, "g");
       const regex5 = new RegExp (`(?!^[/⋅].*)[/⋅]-(?!-)\\${content}`, "g")
       const regex3 = new RegExp(`^\\d+\\.\\${content}`);
       const regex4 = new RegExp(`[⋅\\+\\-/]\\d+\\.\\${content}`, "g");
@@ -168,7 +168,7 @@ function InputCell({name, type, content, setEquation, equation}){
 
             expression = expression.replace(equalRegex4,'$1');
             equationToEvaluate = equationToEvaluate.replace(equalRegex4,"$1");
-            result = eval(equationToEvaluate).toString()
+            result = Number(eval(equationToEvaluate).toFixed(9)).toString()
             expression += content + result
             setEquation({expression, result})
   
@@ -182,7 +182,7 @@ function InputCell({name, type, content, setEquation, equation}){
 
           expression = expression.replace(equalRegex2,"");
           equationToEvaluate = equationToEvaluate.replace(equalRegex2,"");
-          result = eval(equationToEvaluate).toString()
+          result = Number(eval(equationToEvaluate).toFixed(9)).toString()
           result = result.replace("-","-")
           expression += content + result
           setEquation({expression, result})
@@ -196,7 +196,7 @@ function InputCell({name, type, content, setEquation, equation}){
         if(equalRegex3.test(expression)){
           expression = expression.replace(equalRegex3, "")
         }
-        result = eval(equationToEvaluate).toString()
+        result = Number(eval(equationToEvaluate).toFixed(9)).toString()
         result = result.replace("-","-")
         expression += content + result
         setEquation({expression, result})
