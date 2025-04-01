@@ -66,9 +66,11 @@ function InputCell({name, type, content, setEquation, equation}){
   const multiplicationRegex = /⋅/g;
 
   const handleClick = () => {
+     
       if (content === "AC"){
         expression=""
-        setEquation({...equation, expression})
+        result=""
+        setEquation({expression, result})
       }
       else if (type === "operation"){
          if (equalRegex.test(expression)){
@@ -78,19 +80,24 @@ function InputCell({name, type, content, setEquation, equation}){
 
         }
         else{
+          debugger;
       expression += content
       
       const regex1 = new RegExp(`\\${content}+`, "g")
+      const regex6 = new RegExp(`(?<![⋅\\+\\-/])-\\${content}`, "g")
       const regex2 = new RegExp(`(?![/⋅]-|-[⋅\\+\\-/])[⋅\\+\\-/]\\${content}`, "g");
-      const regex5 = new RegExp (`[/⋅]-(?!-)\\${content}`, "g")
+      const regex5 = new RegExp (`(?!^[/⋅].*)[/⋅]-(?!-)\\${content}`, "g")
       const regex3 = new RegExp(`^\\d+\\.\\${content}`);
       const regex4 = new RegExp(`[⋅\\+\\-/]\\d+\\.\\${content}`, "g");
+      
       //const regex5 = /×/;
       expression = expression.replace(regex1,`${content}`);
+      expression = expression.replace(regex6,`${content}`);
       expression = expression.replace(regex2,`${content}`);
       expression = expression.replace(regex3,`0${content}`);
       expression = expression.replace(regex4,`${content}`);
       expression = expression.replace(regex5,`${content}`);
+      
       //equation = equation.replace(regex5,"⋅");
 
       setEquation({...equation, expression})
@@ -116,11 +123,12 @@ function InputCell({name, type, content, setEquation, equation}){
 
       }
       else if(type === "equal"){
-      
+        
         //const equalRegex = /⋅/g;
         const equalRegex1 = /^[/⋅].+/;
         const equalRegex2 = /(?<=.+)[\.\+\/⋅\*\-]$/;
         const equalRegex3 = /^(\+)/;
+        const equalRegex4 = /(\d+(?:\.\d+)?)[/.]-$/
         
         //equation = equation.replace(equalRegex,"");
         debugger;
@@ -128,9 +136,21 @@ function InputCell({name, type, content, setEquation, equation}){
         equationToEvaluate = equationToEvaluate.replace(minusRegex,"-")
 
         if (expression === "⋅" || expression === "/" || expression === "+"  || expression === "-"){
-          expression = content + "NAN" 
+          expression += content + "NAN" 
           setEquation({...equation, expression})
         }
+
+        else if(expression === "/-"){
+         expression = "/";
+         expression += content + "NAN";
+         setEquation({...equation, expression})
+        }
+
+        else if(expression === "/⋅"){
+          expression = "/";
+          expression += content + "NAN";
+          setEquation({...equation, expression})
+         }
 
         else if (equalRegex.test(expression)){
           setEquation({...equation, expression});
@@ -143,6 +163,18 @@ function InputCell({name, type, content, setEquation, equation}){
           setEquation({...equation, expression})
 
         }
+
+          else if (equalRegex4.test(expression)){
+
+            expression = expression.replace(equalRegex4,'$1');
+            equationToEvaluate = equationToEvaluate.replace(equalRegex4,"$1");
+            result = eval(equationToEvaluate).toString()
+            expression += content + result
+            setEquation({expression, result})
+  
+          }  
+
+        
         else if (equalRegex2.test(expression)){
           if(equalRegex3.test(expression)){
             expression = expression.replace(equalRegex3, "")
@@ -156,9 +188,11 @@ function InputCell({name, type, content, setEquation, equation}){
           setEquation({expression, result})
 
       }
+       
+       
 
       else{
-        debugger;
+        
         if(equalRegex3.test(expression)){
           expression = expression.replace(equalRegex3, "")
         }
