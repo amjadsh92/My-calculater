@@ -87,3 +87,13 @@
   font-size: 20px;
   color: greenyellow;
 }
+
+.preview{
+
+  min-height: 35px;
+  text-align: end;
+  color: white;
+  overflow-wrap: break-word;
+  font-size: 28px;
+  color: white
+}

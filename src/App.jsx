@@ -8,12 +8,14 @@ import "./App.css";
 function App() {
 
   const [equation, setEquation] = useState({expression:"",result:""})
+  const [preview, setPreview] =useState({previousPreviewType:"", currentPreviewContent:0})
 
   return(
       <div className="app">
        <div className="calculater">
         <Equation equation = {equation} />
-        <Input setEquation = {setEquation} equation = {equation} />        
+        <Preview preview = {preview}/>
+        <Input setEquation = {setEquation} equation = {equation} setPreview= {setPreview} preview = {preview} />        
 
        </div>
 
@@ -25,28 +27,28 @@ function App() {
 }
 
 
-function Input({setEquation, equation}){
+function Input({setEquation, equation, setPreview, preview}){
 
 return (
   <div className="input">
           
-          <InputCell name="clear" type="clear" content="AC" setEquation = {setEquation} equation ={equation} />
-          <InputCell name="division" type="operation" content="/" setEquation = {setEquation} equation ={equation} />
-          <InputCell name="multiplication" type="operation" content="⋅" setEquation = {setEquation} equation ={equation} />
-          <InputCell name="seven" type="number" content="7" setEquation = {setEquation} equation ={equation} />
-          <InputCell name="eight" type="number" content="8" setEquation = {setEquation} equation ={equation} />
-          <InputCell name="nine" type="number" content="9" setEquation = {setEquation} equation ={equation} />
-          <InputCell name="minus" type="operation" content="-" setEquation = {setEquation} equation ={equation} />
-          <InputCell name="four" type="number" content="4" setEquation = {setEquation} equation ={equation} />
-          <InputCell name="five" type="number" content="5" setEquation = {setEquation} equation ={equation} />
-          <InputCell name="six" type="number" content="6" setEquation = {setEquation} equation ={equation} />
-          <InputCell name="plus" type="operation" content="+" setEquation = {setEquation} equation ={equation} />
-          <InputCell name="one" type="number" content="1" setEquation = {setEquation} equation ={equation} />
-          <InputCell name="two" type="number" content="2" setEquation = {setEquation} equation ={equation} />
-          <InputCell name="three" type="number" content="3" setEquation = {setEquation} equation ={equation} />
-          <InputCell name="equal" type="equal" content="=" setEquation = {setEquation} equation ={equation} />
-          <InputCell name="zero" type="zero" content="0" setEquation = {setEquation} equation ={equation} />
-          <InputCell name="dot" type="dot" content="." setEquation = {setEquation} equation ={equation} />
+          <InputCell name="clear" type="clear" content="AC" setEquation = {setEquation} equation ={equation} setPreview = {setPreview} preview = {preview} />
+          <InputCell name="division" type="operation" content="/" setEquation = {setEquation} equation ={equation} setPreview = {setPreview} preview = {preview} />
+          <InputCell name="multiplication" type="operation" content="⋅" setEquation = {setEquation} equation ={equation} setPreview = {setPreview} preview = {preview} />
+          <InputCell name="seven" type="number" content="7" setEquation = {setEquation} equation ={equation} setPreview = {setPreview} preview = {preview}/>
+          <InputCell name="eight" type="number" content="8" setEquation = {setEquation} equation ={equation} setPreview = {setPreview} preview = {preview} />
+          <InputCell name="nine" type="number" content="9" setEquation = {setEquation} equation ={equation} setPreview = {setPreview} preview = {preview}/>
+          <InputCell name="minus" type="operation" content="-" setEquation = {setEquation} equation ={equation} setPreview = {setPreview} preview = {preview} />
+          <InputCell name="four" type="number" content="4" setEquation = {setEquation} equation ={equation} setPreview = {setPreview} preview = {preview} />
+          <InputCell name="five" type="number" content="5" setEquation = {setEquation} equation ={equation} setPreview = {setPreview} preview = {preview} />
+          <InputCell name="six" type="number" content="6" setEquation = {setEquation} equation ={equation} setPreview = {setPreview} preview = {preview}/>
+          <InputCell name="plus" type="operation" content="+" setEquation = {setEquation} equation ={equation} setPreview = {setPreview} preview = {preview} />
+          <InputCell name="one" type="number" content="1" setEquation = {setEquation} equation ={equation} setPreview = {setPreview} preview = {preview} />
+          <InputCell name="two" type="number" content="2" setEquation = {setEquation} equation ={equation} setPreview = {setPreview} preview = {preview} />
+          <InputCell name="three" type="number" content="3" setEquation = {setEquation} equation ={equation} setPreview = {setPreview} preview = {preview} />
+          <InputCell name="equal" type="equal" content="=" setEquation = {setEquation} equation ={equation} setPreview = {setPreview} preview = {preview} />
+          <InputCell name="zero" type="zero" content="0" setEquation = {setEquation} equation ={equation} setPreview = {setPreview} preview = {preview} />
+          <InputCell name="dot" type="dot" content="." setEquation = {setEquation} equation ={equation} setPreview = {setPreview} preview = {preview} />
           
 
         </div>
@@ -56,11 +58,13 @@ return (
 }
 
 
-function InputCell({name, type, content, setEquation, equation}){
+function InputCell({name, type, content, setEquation, equation, setPreview, preview}){
 
   let equationToEvaluate;
   let expression= equation.expression
   let result = equation.result
+  let currentPreviewContent= preview.currentPreviewContent
+  let previousPreviewType = preview.previousPreviewType
   const equalRegex = /(.+)?=(.+)/;
   const minusRegex = /-/g;
   const multiplicationRegex = /⋅/g;
@@ -70,18 +74,27 @@ function InputCell({name, type, content, setEquation, equation}){
       if (content === "AC"){
         expression=""
         result=""
+        currentPreviewContent = 0
+        previousPreviewType = ""
+        setPreview({previousPreviewType, currentPreviewContent})
         setEquation({expression, result})
       }
       else if (type === "operation"){
          if (equalRegex.test(expression)){
           expression = result + content;
           result = ""
+          previousPreviewType = type
+          currentPreviewContent = content
+          setPreview({previousPreviewType, currentPreviewContent})
           setEquation({ expression, result});
 
         }
         else{
           debugger;
+          previousPreviewType = type
+          currentPreviewContent = ""
       expression += content
+      currentPreviewContent += content
       
       const regex1 = new RegExp(`\\${content}+`, "g")
       const regex6 = new RegExp(`(?<![⋅\\+\\-/])-\\${content}`, "g")
@@ -99,7 +112,7 @@ function InputCell({name, type, content, setEquation, equation}){
       expression = expression.replace(regex5,`${content}`);
       
       //equation = equation.replace(regex5,"⋅");
-
+      setPreview({previousPreviewType, currentPreviewContent})
       setEquation({...equation, expression})
         }
       }
@@ -108,9 +121,14 @@ function InputCell({name, type, content, setEquation, equation}){
         if (equalRegex.test(expression)){
           expression = 0 + content;
           result = ""
+          currentPreviewContent = expression
+          previousPreviewType = type
+          setPreview(previousPreviewType, currentPreviewContent)
           setEquation({ expression, result});
         }
         else{
+          debugger;
+        
         expression += content;
         const dotRegex1 = new RegExp(`\\${content}+`, "g")
         const dotRegex2 = new RegExp(`^\\${content}|(?<=[+⋅/-])\\.` ,"g")
@@ -118,6 +136,19 @@ function InputCell({name, type, content, setEquation, equation}){
         expression = expression.replace(dotRegex1,`${content}`);
         expression = expression.replace(dotRegex2,`0${content}`);
         expression = expression.replace(dotRegex3,"");
+        if (previousPreviewType === "number" || previousPreviewType === "zero"  ){
+          currentPreviewContent += content;
+          currentPreviewContent = currentPreviewContent.replace(dotRegex3,"");
+          previousPreviewType =type;
+          setPreview({previousPreviewType, currentPreviewContent})
+        }
+
+        if (previousPreviewType === "operation" || previousPreviewType === "" ){
+          currentPreviewContent = 0 + content;
+          previousPreviewType =type;
+          setPreview({previousPreviewType, currentPreviewContent})
+        }
+        //setPreview(expression)
         setEquation({...equation, expression})
         }
 
@@ -128,7 +159,7 @@ function InputCell({name, type, content, setEquation, equation}){
         const equalRegex1 = /^[/⋅].+/;
         const equalRegex2 = /(?<=.+)[\.\+\/⋅\*\-]$/;
         const equalRegex3 = /^(\+)/;
-        const equalRegex4 = /(\d+(?:\.\d+)?)[/.]-$/
+        const equalRegex4 = /(\d+(?:\.\d+)?)[\/⋅\*]-$/
         
         //equation = equation.replace(equalRegex,"");
         debugger;
@@ -137,7 +168,11 @@ function InputCell({name, type, content, setEquation, equation}){
 
         if (expression === "⋅" || expression === "/" || expression === "+"  || expression === "-"){
           expression += content + "NAN" 
-          setEquation({...equation, expression})
+          result="NAN"
+          currentPreviewContent = result
+          previousPreviewType = type
+          setPreview({previousPreviewType, currentPreviewContent})
+          setEquation({expression, result})
         }
 
         else if(expression === "/-"){
@@ -170,6 +205,9 @@ function InputCell({name, type, content, setEquation, equation}){
             equationToEvaluate = equationToEvaluate.replace(equalRegex4,"$1");
             result = Number(eval(equationToEvaluate).toFixed(9)).toString()
             expression += content + result
+            currentPreviewContent = result
+            previousPreviewType = type
+            setPreview({previousPreviewType, currentPreviewContent})
             setEquation({expression, result})
   
           }  
@@ -185,6 +223,9 @@ function InputCell({name, type, content, setEquation, equation}){
           result = Number(eval(equationToEvaluate).toFixed(9)).toString()
           result = result.replace("-","-")
           expression += content + result
+          currentPreviewContent = result
+          previousPreviewType = type
+          setPreview({previousPreviewType, currentPreviewContent})
           setEquation({expression, result})
 
       }
@@ -199,6 +240,9 @@ function InputCell({name, type, content, setEquation, equation}){
         result = Number(eval(equationToEvaluate).toFixed(9)).toString()
         result = result.replace("-","-")
         expression += content + result
+        currentPreviewContent = result
+        previousPreviewType = type
+        setPreview({previousPreviewType, currentPreviewContent})
         setEquation({expression, result})
 
 
@@ -211,13 +255,28 @@ function InputCell({name, type, content, setEquation, equation}){
         if (equalRegex.test(expression)){
           expression = content;
           result = ""
+          currentPreviewContent = content;
+          previousPreviewType = type
+          setPreview({previousPreviewType, currentPreviewContent})
           setEquation({ expression, result});
         }
           else{
-            
+            debugger;
             const zeroRegex = /(?<!\d\.?)0(?=\d)/g;
             expression += content;
+            if (previousPreviewType === "operation"){
+            currentPreviewContent = content;
+            previousPreviewType = type
+            setPreview({previousPreviewType, currentPreviewContent})
+            }
+            else{
+            currentPreviewContent += content;
+            previousPreviewType = type
+            currentPreviewContent = currentPreviewContent.replace(zeroRegex, "")
+            setPreview({previousPreviewType, currentPreviewContent})
+            }
             expression = expression.replace(zeroRegex, "")
+            
             setEquation({...equation, expression})
             }
 
@@ -244,6 +303,14 @@ function Equation({equation}){
   return(
     <div id="result" className="result ds-digital">{equation.expression}</div>
   )
+}
+
+function Preview({preview}){
+
+  return(
+    <div id="preview" className="preview ds-digital">{preview.currentPreviewContent}</div>
+  )
+
 }
 
 
