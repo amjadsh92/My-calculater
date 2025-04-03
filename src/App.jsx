@@ -27,34 +27,43 @@ function App() {
 }
 
 
-function Input({setEquation, equation, setPreview, preview}){
+function Input({ setEquation, equation, setPreview, preview }) {
+  const buttons = [
+    { name: "clear", type: "clear", content: "AC" },
+    { name: "division", type: "operation", content: "/" },
+    { name: "multiplication", type: "operation", content: "⋅" },
+    { name: "seven", type: "number", content: "7" },
+    { name: "eight", type: "number", content: "8" },
+    { name: "nine", type: "number", content: "9" },
+    { name: "minus", type: "operation", content: "-" },
+    { name: "four", type: "number", content: "4" },
+    { name: "five", type: "number", content: "5" },
+    { name: "six", type: "number", content: "6" },
+    { name: "plus", type: "operation", content: "+" },
+    { name: "one", type: "number", content: "1" },
+    { name: "two", type: "number", content: "2" },
+    { name: "three", type: "number", content: "3" },
+    { name: "equal", type: "equal", content: "=" },
+    { name: "zero", type: "zero", content: "0" },
+    { name: "dot", type: "dot", content: "." },
+  ];
 
-return (
-  <div className="input">
-          
-          <InputCell name="clear" type="clear" content="AC" setEquation = {setEquation} equation ={equation} setPreview = {setPreview} preview = {preview} />
-          <InputCell name="division" type="operation" content="/" setEquation = {setEquation} equation ={equation} setPreview = {setPreview} preview = {preview} />
-          <InputCell name="multiplication" type="operation" content="⋅" setEquation = {setEquation} equation ={equation} setPreview = {setPreview} preview = {preview} />
-          <InputCell name="seven" type="number" content="7" setEquation = {setEquation} equation ={equation} setPreview = {setPreview} preview = {preview}/>
-          <InputCell name="eight" type="number" content="8" setEquation = {setEquation} equation ={equation} setPreview = {setPreview} preview = {preview} />
-          <InputCell name="nine" type="number" content="9" setEquation = {setEquation} equation ={equation} setPreview = {setPreview} preview = {preview}/>
-          <InputCell name="minus" type="operation" content="-" setEquation = {setEquation} equation ={equation} setPreview = {setPreview} preview = {preview} />
-          <InputCell name="four" type="number" content="4" setEquation = {setEquation} equation ={equation} setPreview = {setPreview} preview = {preview} />
-          <InputCell name="five" type="number" content="5" setEquation = {setEquation} equation ={equation} setPreview = {setPreview} preview = {preview} />
-          <InputCell name="six" type="number" content="6" setEquation = {setEquation} equation ={equation} setPreview = {setPreview} preview = {preview}/>
-          <InputCell name="plus" type="operation" content="+" setEquation = {setEquation} equation ={equation} setPreview = {setPreview} preview = {preview} />
-          <InputCell name="one" type="number" content="1" setEquation = {setEquation} equation ={equation} setPreview = {setPreview} preview = {preview} />
-          <InputCell name="two" type="number" content="2" setEquation = {setEquation} equation ={equation} setPreview = {setPreview} preview = {preview} />
-          <InputCell name="three" type="number" content="3" setEquation = {setEquation} equation ={equation} setPreview = {setPreview} preview = {preview} />
-          <InputCell name="equal" type="equal" content="=" setEquation = {setEquation} equation ={equation} setPreview = {setPreview} preview = {preview} />
-          <InputCell name="zero" type="zero" content="0" setEquation = {setEquation} equation ={equation} setPreview = {setPreview} preview = {preview} />
-          <InputCell name="dot" type="dot" content="." setEquation = {setEquation} equation ={equation} setPreview = {setPreview} preview = {preview} />
-          
-
-        </div>
-)
-
-
+  return (
+    <div className="input">
+      {buttons.map(({ name, type, content }) => (
+        <InputCell
+          key={name}
+          name={name}
+          type={type}
+          content={content}
+          setEquation={setEquation}
+          equation={equation}
+          setPreview={setPreview}
+          preview={preview}
+        />
+      ))}
+    </div>
+  );
 }
 
 
