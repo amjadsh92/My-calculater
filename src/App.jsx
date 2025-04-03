@@ -78,6 +78,7 @@ function InputCell({name, type, content, setEquation, equation, setPreview, prev
   const equalRegex = /(.+)?=(.+)/;
   const minusRegex = /-/g;
   const multiplicationRegex = /⋅/g;
+  const equalityStatementExists = equalRegex.test(expression);
 
   const handleClick = () => {
      
@@ -90,7 +91,7 @@ function InputCell({name, type, content, setEquation, equation, setPreview, prev
         setEquation({expression, result})
       }
       else if (type === "operation"){
-         if (equalRegex.test(expression)){
+         if (equalityStatementExists){
           expression = result + content;
           result = ""
           previousPreviewType = type
@@ -101,23 +102,28 @@ function InputCell({name, type, content, setEquation, equation, setPreview, prev
         }
         else{
           
-          previousPreviewType = type
-          currentPreviewContent = ""
+          
+          
           expression += content
+          currentPreviewContent = ""
           currentPreviewContent += previewContent
-      
+          previousPreviewType = type
+      // // .....> /
       const regex1 = new RegExp(`\\${content}+`, "g")
+      // -/ ...> / but /-/ ...> not taken
       const regex6 = new RegExp(`(?<![⋅\\+\\-/])-\\${content}`, "g")
+      // /+ ....> +
       const regex2 = new RegExp(`(?![/⋅]-|-[⋅\\+\\-/])[⋅\\+\\-/\\.]\\${content}`, "g");
+      //  /-⋅ ...> ⋅ but [/.] not at the beginning
       const regex5 = new RegExp (`(?!^[/⋅].*)[/⋅]-(?!-)\\${content}`, "g")
-      const regex3 = new RegExp(`^\\d+\\.\\${content}`);
+      //const regex3 = new RegExp(`^\\d+\\.\\${content}`);
       const regex4 = new RegExp(`[⋅\\+\\-/]\\d+\\.\\${content}`, "g");
       
       //const regex5 = /×/;
       expression = expression.replace(regex1,`${content}`);
       expression = expression.replace(regex6,`${content}`);
       expression = expression.replace(regex2,`${content}`);
-      expression = expression.replace(regex3,`0${content}`);
+      //expression = expression.replace(regex3,`0${content}`);
       expression = expression.replace(regex4,`${content}`);
       expression = expression.replace(regex5,`${content}`);
       
