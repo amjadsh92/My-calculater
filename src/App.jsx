@@ -65,6 +65,7 @@ function InputCell({name, type, content, setEquation, equation, setPreview, prev
   let result = equation.result
   let currentPreviewContent= preview.currentPreviewContent
   let previousPreviewType = preview.previousPreviewType
+  let previewContent = name === "multiplication" ? "x": content
   const equalRegex = /(.+)?=(.+)/;
   const minusRegex = /-/g;
   const multiplicationRegex = /⋅/g;
@@ -84,7 +85,7 @@ function InputCell({name, type, content, setEquation, equation, setPreview, prev
           expression = result + content;
           result = ""
           previousPreviewType = type
-          currentPreviewContent = content
+          currentPreviewContent = previewContent
           setPreview({previousPreviewType, currentPreviewContent})
           setEquation({ expression, result});
 
@@ -94,7 +95,7 @@ function InputCell({name, type, content, setEquation, equation, setPreview, prev
           previousPreviewType = type
           currentPreviewContent = ""
           expression += content
-          currentPreviewContent += content
+          currentPreviewContent += previewContent
       
       const regex1 = new RegExp(`\\${content}+`, "g")
       const regex6 = new RegExp(`(?<![⋅\\+\\-/])-\\${content}`, "g")
@@ -123,7 +124,7 @@ function InputCell({name, type, content, setEquation, equation, setPreview, prev
           result = ""
           currentPreviewContent = expression
           previousPreviewType = type
-          setPreview(previousPreviewType, currentPreviewContent)
+          setPreview({previousPreviewType, currentPreviewContent})
           setEquation({ expression, result});
         }
         else{
@@ -137,14 +138,14 @@ function InputCell({name, type, content, setEquation, equation, setPreview, prev
         expression = expression.replace(dotRegex2,`0${content}`);
         expression = expression.replace(dotRegex3,"");
         if (previousPreviewType === "number" || previousPreviewType === "zero"  ){
-          currentPreviewContent += content;
+          currentPreviewContent += previewContent;
            currentPreviewContent = currentPreviewContent.replace(dotRegex3,"");
           previousPreviewType =type;
           setPreview({previousPreviewType, currentPreviewContent})
         }
 
         if (previousPreviewType === "operation" || previousPreviewType === "" ){
-          currentPreviewContent = 0 + content;
+          currentPreviewContent = 0 + previewContent;
           previousPreviewType =type;
           setPreview({previousPreviewType, currentPreviewContent})
         }
@@ -258,7 +259,7 @@ function InputCell({name, type, content, setEquation, equation, setPreview, prev
         if (equalRegex.test(expression)){
           expression = content;
           result = ""
-          currentPreviewContent = content;
+          currentPreviewContent = previewContent;
           previousPreviewType = type
           setPreview({previousPreviewType, currentPreviewContent})
           setEquation({ expression, result});
@@ -268,12 +269,12 @@ function InputCell({name, type, content, setEquation, equation, setPreview, prev
             const zeroRegex = /(?<!\d\.?)0(?=\d)/g;
             expression += content;
             if (previousPreviewType === "operation"){
-            currentPreviewContent = content;
+            currentPreviewContent = previewContent;
             previousPreviewType = type
             setPreview({previousPreviewType, currentPreviewContent})
             }
             else{
-            currentPreviewContent += content;
+            currentPreviewContent += previewContent;
             previousPreviewType = type
             currentPreviewContent = currentPreviewContent.replace(zeroRegex, "")
             setPreview({previousPreviewType, currentPreviewContent})
