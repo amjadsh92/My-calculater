@@ -159,18 +159,21 @@ function InputCell({name, type, content, setEquation, equation, setPreview, prev
         const equalRegex1 = /^[/⋅].+/;
         const equalRegex2 = /(?<=.+)[\.\+\/⋅\*\-]$/;
         const equalRegex3 = /^(\+)/;
-        const equalRegex4 = /(\d+(?:\.\d+)?)[\/⋅\*]-$/
+        const equalRegex4 = /(\d+(?:\.\d+)?|NAN|INFINITY)[\/⋅\*]-$/
         
         //equation = equation.replace(equalRegex,"");
         debugger;
         equationToEvaluate = expression.replace(multiplicationRegex,"*")
         equationToEvaluate = equationToEvaluate.replace(minusRegex,"-")
+        equationToEvaluate = equationToEvaluate.replace("INFINITY","Infinity")
+        equationToEvaluate = equationToEvaluate.replace("NAN","NaN")
 
         if (expression === "⋅" || expression === "/" || expression === "+"  || expression === "-" || expression === ""){
           expression += content + "NAN" 
           result="NAN"
           currentPreviewContent = result
           previousPreviewType = type
+          equationToEvaluate = expression.replace("NAN","NaN")
           setPreview({previousPreviewType, currentPreviewContent})
           setEquation({expression, result})
         }
