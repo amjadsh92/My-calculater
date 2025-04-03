@@ -90,11 +90,11 @@ function InputCell({name, type, content, setEquation, equation, setPreview, prev
 
         }
         else{
-          debugger;
+          
           previousPreviewType = type
           currentPreviewContent = ""
-      expression += content
-      currentPreviewContent += content
+          expression += content
+          currentPreviewContent += content
       
       const regex1 = new RegExp(`\\${content}+`, "g")
       const regex6 = new RegExp(`(?<![⋅\\+\\-/])-\\${content}`, "g")
@@ -138,7 +138,7 @@ function InputCell({name, type, content, setEquation, equation, setPreview, prev
         expression = expression.replace(dotRegex3,"");
         if (previousPreviewType === "number" || previousPreviewType === "zero"  ){
           currentPreviewContent += content;
-          currentPreviewContent = currentPreviewContent.replace(dotRegex3,"");
+           currentPreviewContent = currentPreviewContent.replace(dotRegex3,"");
           previousPreviewType =type;
           setPreview({previousPreviewType, currentPreviewContent})
         }
@@ -166,7 +166,7 @@ function InputCell({name, type, content, setEquation, equation, setPreview, prev
         equationToEvaluate = expression.replace(multiplicationRegex,"*")
         equationToEvaluate = equationToEvaluate.replace(minusRegex,"-")
 
-        if (expression === "⋅" || expression === "/" || expression === "+"  || expression === "-"){
+        if (expression === "⋅" || expression === "/" || expression === "+"  || expression === "-" || expression === ""){
           expression += content + "NAN" 
           result="NAN"
           currentPreviewContent = result
