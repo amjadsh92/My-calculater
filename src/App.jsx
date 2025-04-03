@@ -117,14 +117,14 @@ function InputCell({name, type, content, setEquation, equation, setPreview, prev
       //  /-⋅ ...> ⋅ but [/.] not at the beginning
       const regex5 = new RegExp (`(?!^[/⋅].*)[/⋅]-(?!-)\\${content}`, "g")
       //const regex3 = new RegExp(`^\\d+\\.\\${content}`);
-      const regex4 = new RegExp(`[⋅\\+\\-/]\\d+\\.\\${content}`, "g");
+      //const regex4 = new RegExp(`[⋅\\+\\-/]\\d+\\.\\${content}`, "g");
       
       //const regex5 = /×/;
       expression = expression.replace(regex1,`${content}`);
       expression = expression.replace(regex6,`${content}`);
       expression = expression.replace(regex2,`${content}`);
       //expression = expression.replace(regex3,`0${content}`);
-      expression = expression.replace(regex4,`${content}`);
+      //expression = expression.replace(regex4,`${content}`);
       expression = expression.replace(regex5,`${content}`);
       
       //equation = equation.replace(regex5,"⋅");
