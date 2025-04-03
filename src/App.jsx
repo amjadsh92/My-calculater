@@ -81,7 +81,7 @@ function InputCell({name, type, content, setEquation, equation, setPreview, prev
 
   const handleClick = () => {
      
-      if (content === "AC"){
+      if (type === "clear"){
         expression=""
         result=""
         currentPreviewContent = 0
