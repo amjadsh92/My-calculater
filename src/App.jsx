@@ -110,9 +110,9 @@ function InputCell({name, type, content, setEquation, equation, setPreview, prev
           previousPreviewType = type
       // // .....> /
       const regex1 = new RegExp(`\\${content}+`, "g")
-      // -/ ...> / but /-/ ...> not taken
+      // -[⋅+/-] ...> -   
       const regex6 = new RegExp(`(?<![⋅\\+\\-/])-\\${content}`, "g")
-      // /+ ....> + (/- or ⋅- or -[/-⋅+] are not taken)
+      // /+ ....> + (/- or ⋅- or -[/-⋅+] are not taken) 99./ ....> 99/
       const regex2 = new RegExp(`(?![/⋅]-|-[⋅\\+\\-/])[⋅\\+/\\.]\\${content}`, "g");
       //  /-⋅ ...> ⋅ but [/.] not at the beginning. This regex
       //handles situations when you need to add an operator after
@@ -129,7 +129,7 @@ function InputCell({name, type, content, setEquation, equation, setPreview, prev
       }
 
       else if(type === "dot") {
-        if (equalRegex.test(expression)){
+        if (equalityStatementExists){
           expression = 0 + content;
           result = ""
           currentPreviewContent = expression
@@ -138,7 +138,7 @@ function InputCell({name, type, content, setEquation, equation, setPreview, prev
           setEquation({ expression, result});
         }
         else{
-          debugger;
+          
         
         expression += content;
         const dotRegex1 = new RegExp(`\\${content}+`, "g")
@@ -167,13 +167,21 @@ function InputCell({name, type, content, setEquation, equation, setPreview, prev
       else if(type === "equal"){
         
         //const equalRegex = /⋅/g;
+        // Stop giving results when the expression starts
+        // with  / or ⋅
         const equalRegex1 = /^[/⋅].+/;
+        // Clear operations and dots when they are at the end
+        // and preceeded by a character
         const equalRegex2 = /(?<=.+)[\.\+\/⋅\*\-]$/;
+        // Check if the expression starts with a + sign
         const equalRegex3 = /^(\+)/;
+        // Check if the expression ends with this format: [/⋅]-
+        // and is preceeded by a number NAN or infinity
         const equalRegex4 = /(\d+(?:\.\d+)?|NAN|INFINITY)[\/⋅\*]-$/
         
-        //equation = equation.replace(equalRegex,"");
-        debugger;
+        const expressionStartsWithDivisionOrMultiplication = equalRegex1.test(expression)
+        const expressionEndsWithANOperation = equalRegex2.test(expression)
+        const expressionStartsWithAPositiveSign = equalRegex3.test(expression)
         equationToEvaluate = expression.replace(multiplicationRegex,"*")
         equationToEvaluate = equationToEvaluate.replace(minusRegex,"-")
         equationToEvaluate = equationToEvaluate.replace("INFINITY","Infinity")
@@ -189,26 +197,14 @@ function InputCell({name, type, content, setEquation, equation, setPreview, prev
           setEquation({expression, result})
         }
 
-        else if(expression === "/-"){
-         expression = "/";
-         expression += content + "NAN";
-         setEquation({...equation, expression})
-        }
+       
 
-        else if(expression === "/⋅"){
-          expression = "/";
-          expression += content + "NAN";
-          setEquation({...equation, expression})
-         }
-
-        else if (equalRegex.test(expression)){
+        else if (equalityStatementExists){
           setEquation({...equation, expression});
 
         }
-        else if(equalRegex1.test(expression)){
-          if(equalRegex3.test(expression)){
-            expression = expression.replace(equalRegex3, "")
-          }
+        else if(expressionStartsWithDivisionOrMultiplication){
+          
           setEquation({...equation, expression})
 
         }
@@ -227,8 +223,8 @@ function InputCell({name, type, content, setEquation, equation, setPreview, prev
           }  
 
         
-        else if (equalRegex2.test(expression)){
-          if(equalRegex3.test(expression)){
+        else if (expressionEndsWithANOperation){
+          if(expressionStartsWithAPositiveSign){
             expression = expression.replace(equalRegex3, "")
           }
 
@@ -248,7 +244,7 @@ function InputCell({name, type, content, setEquation, equation, setPreview, prev
 
       else{
         
-        if(equalRegex3.test(expression)){
+        if(expressionStartsWithAPositiveSign){
           expression = expression.replace(equalRegex3, "")
         }
         result = Number(eval(equationToEvaluate).toFixed(9)).toString()
@@ -263,10 +259,10 @@ function InputCell({name, type, content, setEquation, equation, setPreview, prev
       }
 
       }
-
+      // Basically when the type is a number
       else{
         
-        if (equalRegex.test(expression)){
+        if (equalityStatementExists){
           expression = content;
           result = ""
           currentPreviewContent = previewContent;
@@ -275,7 +271,7 @@ function InputCell({name, type, content, setEquation, equation, setPreview, prev
           setEquation({ expression, result});
         }
           else{
-            debugger;
+            // search for left zeros
             const zeroRegex = /(?<!\d\.?)0(?=\d)/g;
             expression += content;
             if (previousPreviewType === "operation"){
