@@ -97,3 +97,10 @@
   font-size: 28px;
   color: white
 }
+
+@media (max-width: 390px){
+  .calculater{
+    width:80%;
+    aspect-ratio: 36 / 43; 
+  }
+} 
