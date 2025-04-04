@@ -13,13 +13,15 @@
   width:100vw;
   background-color:rgb(194, 194, 214);
   align-content:center;
+  overflow:auto;
+  
 
 }
 
 .calculater{
   width:360px;
   background-color: black;
-  margin:0px auto;
+  margin:20px auto;
   align-content:end;
   padding:5px;
   
