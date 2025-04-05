@@ -38,6 +38,10 @@
   
 }
 
+.input > div{
+  cursor: pointer;
+}
+
 .number, .operation, .equal, .zero, .dot, .clear{
   text-align:center;
   align-content:center;
