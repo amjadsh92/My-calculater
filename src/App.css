@@ -8,13 +8,27 @@
   box-sizing: border-box;
 }
 
+.title{
+  margin-left:auto;
+  margin-right:auto;
+  width:fit-content;
+  font-family: 'DS-Digital', sans-serif;
+  margin-bottom:80px;
+  font-size:40px;
+}
+
 .app{
   height:100vh;
   width:100vw;
   background-color:rgb(194, 194, 214);
   align-content:center;
   overflow:auto;
+  background: linear-gradient(
+  135deg,
+  rgb(194, 194, 214),
+  rgb(128 128 186)
   
+);
 
 }
 

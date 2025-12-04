@@ -12,6 +12,7 @@ function App() {
 
   return (
     <div className="app">
+      <div className="title">Calculate!</div>
       <div className="calculater">
         <Equation equation={equation} />
         <Preview preview={preview} />
